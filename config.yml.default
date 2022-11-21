@@ -33,6 +33,7 @@ engine:                      # Engine settings.
     offer_draw_pieces: 10    # Only if the pieces on board are less than or equal to this value, the bot offers/accepts draw.
   online_moves:
     max_out_of_book_moves: 10 # Stop using online opening books after they don't have a move for 'max_out_of_book_moves' positions. Doesn't apply to the online endgame tablebases.
+    max_retries: 2           # The maximum amount of retries when getting an online move.
     chessdb_book:
       enabled: false
       min_time: 20
@@ -51,21 +52,21 @@ engine:                      # Engine settings.
       min_time: 20
       max_pieces: 7
       source: "lichess"      # One of "lichess", "chessdb".
-      move_quality: "best"   # One of "good", "best".
+      move_quality: "best"   # One of "good", "best", "suggest" (it takes all the "good" moves and tells the engine to only consider these; will move instantly if there is only 1 "good" move).
   lichess_bot_tbs:
     syzygy:
       enabled: false
       paths:
         - "engines/syzygy"
       max_pieces: 7
-      move_quality: "best"   # One of "good", "best".
+      move_quality: "best"   # One of "good", "best", "suggest" (it takes all the "good" moves and tells the engine to only consider these; will move instantly if there is only 1 "good" move).
     gaviota:
       enabled: false
       paths:
         - "engines/gaviota"
       max_pieces: 5
       min_dtm_to_consider_as_wdl_1: 120  # The minimum dtm to consider as syzygy wdl=1/-1. Set to 100 to disable.
-      move_quality: "best"   # One of "good", "best".
+      move_quality: "best"   # One of "good", "best", "suggest" (it takes all the "good" moves and tells the engine to only consider these; will move instantly if there is only 1 "good" move).
 # engine_options:            # Any custom command line params to pass to the engine.
 #   cpuct: 3.1
   homemade_options:
@@ -131,6 +132,9 @@ challenge:                   # Incoming challenges.
   modes:                     # Game modes to accept.
     - casual                 # Unrated games.
     - rated                  # Rated games - must comment if the engine doesn't try to win.
+# block_list:                # List of users from which the challenges are always declined.
+#   - user1
+#   - user2
 
 greeting:
   # Optional substitution keywords (include curly braces):
@@ -162,3 +166,7 @@ matchmaking:
   opponent_rating_difference: 100 # The maximum difference in rating between the bot's rating and opponent's rating.
   opponent_allow_tos_violation: true # Set to 'false' to prevent challenging bots that violated Lichess Terms of Service.
   challenge_mode: "random"    # Set it to the mode in which challenges are sent. Possible options are 'casual', 'rated' and 'random'.
+  delay_after_decline: none  # If a bot declines a challenge, delay issuing another challenge to that bot. Possible options are 'none', 'coarse', and 'fine'.
+# block_list:                 # The list of bots that will not be challenged
+#   - user1
+#   - user2
